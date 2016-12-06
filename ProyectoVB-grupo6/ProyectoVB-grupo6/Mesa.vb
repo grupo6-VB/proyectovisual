@@ -9,6 +9,24 @@
         End Set
     End Property
 
+    Private _padron As ArrayList
+    Public Property Padron() As ArrayList
+        Get
+            Return _padron
+        End Get
+        Set(ByVal value As ArrayList)
+            _padron = value
+        End Set
+    End Property
 
+    Private _votos As ArrayList
+    Public Property Votos() As ArrayList
+        Get
+            Return _votos
+        End Get
+        Set(ByVal value As ArrayList)
+            _padron = value
+        End Set
+    End Property
 
 End Class

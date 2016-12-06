@@ -1,4 +1,5 @@
 ﻿Public Class Candidato
+    Inherits Persona
     Private _id As Integer
     Public Property Id() As Integer
         Get
@@ -9,23 +10,23 @@
         End Set
     End Property
 
-    Private _nombre As String
-    Public Property Nombre() As String
+    Private _cargo As String 'dignidad a la que aspira ejem: PRESIDENTE, ASAMBLEISTA, ETC
+    Public Property Cargo() As String
         Get
-            Return _nombre
+            Return _cargo
         End Get
         Set(ByVal value As String)
-            _nombre = value
+            _cargo = value
         End Set
     End Property
 
-    Private _apellido As String
-    Public Property Apellido() As String
+    Private _votos As Integer 'La cantidad de votos que va acumulando por parte de los votantes
+    Public Property Votos() As Integer
         Get
-            Return _apellido
+            Return _votos
         End Get
-        Set(ByVal value As String)
-            _apellido = value
+        Set(ByVal value As Integer)
+            _votos = value
         End Set
     End Property
 
