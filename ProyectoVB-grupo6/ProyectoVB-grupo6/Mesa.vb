@@ -41,7 +41,7 @@ Public Class Mesa
         Me._padron.Add(persona)
     End Sub
 
-    Public Sub LeerPadron()
+    Public Sub CargarPadron()
         Dim path As String = "MESAS/" & Me.NrodeMesa & ".xml"
         Dim xmlDoc As New XmlDocument()
         xmlDoc.Load(path)
@@ -68,4 +68,57 @@ Public Class Mesa
             persona.MostrarDatos()
         Next
     End Sub
+
+    Public Function VerificarVotante() As Boolean
+        Dim cki As ConsoleKeyInfo
+        Dim cedula As String = ""
+        Dim car As Integer = 0
+        Console.WriteLine("BIENVENIDO... INGRESE SU NUMERO DE CEDULA")
+        While cedula.Length < 10
+            'Do
+            cki = Console.ReadKey()
+            Dim c As String = cki.Key.ToString
+            Dim num As Boolean = False
+            Dim n_b As Byte = 0
+            'Console.WriteLine("presiono" & c)
+            Do Until num
+                Dim ex As Integer = InStr(1, c, CStr(n_b))
+                If ex > 0 Then
+                    cedula = cedula & n_b
+                    num = True
+                Else
+                    n_b += 1
+                    If c.Length = 1 Or c.Length > 2 Or n_b > 9 Then
+                        'Console.WriteLine("presiono: " & c)
+                        'Console.WriteLine("no es num")
+                        Exit Do
+                    Else
+
+                    End If
+                End If
+            Loop
+
+            'Console.WriteLine("presiono" & n_b)
+            If CInt(n_b) >= 0 Then
+                'Console.WriteLine("presiono" & c)
+                Console.Clear()
+                Console.Write(vbTab & "CEDULA # " & cedula)
+            End If
+            
+            'Loop While cki.Key <> ConsoleKey.Escape
+
+        End While
+        Console.WriteLine()
+        Console.WriteLine("CEDULA COMPLETA ----- PROCEDIENDO A VOTAR")
+        Console.ReadLine()
+        Return False
+    End Function
+
+    Public Sub ProcesoVotacion()
+        VerificarVotante()
+
+       
+    End Sub
+
+    
 End Class
