@@ -1,31 +1,54 @@
-﻿Module Module1
+﻿Imports System.Xml
+
+Module Module1
 
     Sub Main()
 
-        'Dim cki As ConsoleKeyInfo
-        ' Prevent example from ending if CTL+C is pressed.
-        Console.TreatControlCAsInput = True
-
-        'Console.WriteLine("Press any combination of CTL, ALT, and SHIFT, and a console key.")
-        'Console.WriteLine("Press the Escape (Esc) key to quit: " + vbCrLf)
-        'Do
-        '    cki = Console.ReadKey()
-        '    Console.Write(" --- You pressed ")
-        '    If (cki.Modifiers And ConsoleModifiers.Alt) <> 0 Then Console.Write("ALT+")
-        '    If (cki.Modifiers And ConsoleModifiers.Shift) <> 0 Then Console.Write("SHIFT+")
-        '    If (cki.Modifiers And ConsoleModifiers.Control) <> 0 Then Console.Write("CTL+")
-        '    Console.WriteLine(cki.Key.ToString)
-        'Loop While cki.Key <> ConsoleKey.Escape
-
         Dim mesa As Mesa = New Mesa("0001")
         mesa.CargarPadron()
-        mesa.ListarVotantes()
+        'mesa.ListarVotantes()
         mesa.ProcesoVotacion()
-        'Console.ReadLine()
+        CargarCandidatos()
+        Console.ReadLine()
         'MENU PRINCIPAL
     End Sub
     'ADMINISTRAR
     'RESULTADO X CANDIDATO
     'SUFRAGAR
     'CERRAR
+
+    Private Sub CargarCandidatos()
+        Dim part_politicos As ArrayList = New ArrayList()
+        Dim path As String = "POLITICA/PARTIDOSPOLITICOS.xml"
+        Dim xmlDoc As New XmlDocument()
+        xmlDoc.Load(path)
+        Dim politica As XmlNodeList = xmlDoc.GetElementsByTagName("politica")
+        For Each pol As XmlNode In politica
+            For Each partido As XmlNode In pol
+                'Console.WriteLine(partido.Name)
+                Dim p_p As Partido_Politico = New Partido_Politico(partido.Attributes("id").Value, partido.Attributes("nombre").Value)
+                For Each candidato As XmlNode In partido
+                    Dim cand As Candidato = New Candidato(candidato.Attributes("id").Value, candidato.Attributes("cargo").Value)
+                    For Each nodo As XmlNode In candidato.ChildNodes
+                        Select Case nodo.Name
+                            Case "nombre"
+                                cand.Nombre = nodo.InnerText
+                            Case "apellido"
+                                cand.Apellido = nodo.InnerText
+                            Case "votos"
+                                cand.EstadoSufragio = CInt(nodo.InnerText)
+                            Case Else
+                        End Select
+                    Next
+                    p_p.AgregarCandidato(cand)
+                Next
+                part_politicos.Add(p_p)
+            Next
+
+            For Each p_p As Partido_Politico In part_politicos
+                Console.WriteLine()
+                p_p.MostrarCandidatos()
+            Next
+        Next
+    End Sub
 End Module

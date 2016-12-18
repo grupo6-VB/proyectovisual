@@ -30,4 +30,13 @@
         End Set
     End Property
 
+    Public Sub New(id As String, cargo As String)
+        Me.Id = id
+        Me.Cargo = cargo
+    End Sub
+
+    Public Sub MostrarDatosC()
+        Console.WriteLine(Me.Nombre & "    " & Me.Apellido & "      " & Me.Cargo)
+    End Sub
+
 End Class

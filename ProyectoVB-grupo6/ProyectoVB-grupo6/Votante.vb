@@ -1,13 +1,13 @@
 ﻿Public Class Votante
-    Private _id As String
-    Public Property Id() As String
-        Get
-            Return _id
-        End Get
-        Set(ByVal value As String)
-            _id = value
-        End Set
-    End Property
+    'Private _id As String
+    'Public Property Id() As String
+    '    Get
+    '        Return _id
+    '    End Get
+    '    Set(ByVal value As String)
+    '        _id = value
+    '    End Set
+    'End Property
 
     Private _cedula As Integer
     Public Property Cedula() As Integer
@@ -47,5 +47,9 @@
             _edad = value
         End Set
     End Property
+
+    Public Sub New()
+
+    End Sub
 
 End Class

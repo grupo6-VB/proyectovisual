@@ -55,6 +55,8 @@ Public Class Mesa
                         persona.Nombre = nodo.InnerText
                     Case "apellido"
                         persona.Apellido = nodo.InnerText
+                    Case "estadoSufragio"
+                        persona.EstadoSufragio = CBool(nodo.InnerText)
                     Case Else
                 End Select
             Next
@@ -69,7 +71,7 @@ Public Class Mesa
         Next
     End Sub
 
-    Public Function VerificarVotante() As Boolean
+    Public Function VerificarVotante() As Persona
         Dim cki As ConsoleKeyInfo
         Dim cedula As String = ""
         Dim car As Integer = 0
@@ -80,7 +82,6 @@ Public Class Mesa
             Dim c As String = cki.Key.ToString
             Dim num As Boolean = False
             Dim n_b As Byte = 0
-            'Console.WriteLine("presiono" & c)
             Do Until num
                 Dim ex As Integer = InStr(1, c, CStr(n_b))
                 If ex > 0 Then
@@ -89,8 +90,6 @@ Public Class Mesa
                 Else
                     n_b += 1
                     If c.Length = 1 Or c.Length > 2 Or n_b > 9 Then
-                        'Console.WriteLine("presiono: " & c)
-                        'Console.WriteLine("no es num")
                         Exit Do
                     Else
 
@@ -98,27 +97,43 @@ Public Class Mesa
                 End If
             Loop
 
-            'Console.WriteLine("presiono" & n_b)
             If CInt(n_b) >= 0 Then
-                'Console.WriteLine("presiono" & c)
                 Console.Clear()
                 Console.Write(vbTab & "CEDULA # " & cedula)
             End If
-            
-            'Loop While cki.Key <> ConsoleKey.Escape
 
         End While
         Console.WriteLine()
         Console.WriteLine("CEDULA COMPLETA ----- PROCEDIENDO A VOTAR")
         Console.ReadLine()
-        Return False
+
+        Dim vot As Persona = New Persona()
+        For Each votante As Persona In Me.Padron
+            'votante.MostrarDatos()
+            If votante.Cedula = cedula Then
+                vot = votante
+            End If
+        Next
+        Return vot
     End Function
 
     Public Sub ProcesoVotacion()
-        VerificarVotante()
+        Dim votante As Persona = VerificarVotante()
 
-       
+        If votante.Nombre = "" Then
+            Console.WriteLine("NO SE ENCUENTRA EN EL PADRON")
+        Else
+            votante.MostrarDatos()
+        End If
+
+        If votante.EstadoSufragio Then
+            Console.WriteLine("UD YA EJERCIO SU DERECHO AL VOTO")
+            Console.ReadLine()
+            Exit Sub
+        End If
+
+        Console.ReadLine()
     End Sub
 
-    
+
 End Class
