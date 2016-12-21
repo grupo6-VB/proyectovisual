@@ -7,15 +7,27 @@ Module Module1
         Dim mesa As Mesa = New Mesa("0001")
         mesa.CargarPadron()
         'mesa.ListarVotantes()
-        mesa.ProcesoVotacion()
+        'mesa.ProcesoVotacion()
         CargarCandidatos()
+        Dim opc As Byte = MenuPrincipal()
+
+        Select Case opc
+            Case 1
+            Case 2
+                mesa.ListarVotantes()
+            Case 3
+                mesa.ProcesoVotacion()
+            Case 4
+                Console.WriteLine("GRACIAS POR SU VISITA")
+                Exit Select
+            Case Else
+                Exit Sub
+        End Select
+
+
         Console.ReadLine()
-        'MENU PRINCIPAL
+
     End Sub
-    'ADMINISTRAR
-    'RESULTADO X CANDIDATO
-    'SUFRAGAR
-    'CERRAR
 
     Private Sub CargarCandidatos()
         Dim part_politicos As ArrayList = New ArrayList()
@@ -45,10 +57,32 @@ Module Module1
                 part_politicos.Add(p_p)
             Next
 
-            For Each p_p As Partido_Politico In part_politicos
-                Console.WriteLine()
-                p_p.MostrarCandidatos()
-            Next
+            'For Each p_p As Partido_Politico In part_politicos
+            '    Console.WriteLine()
+            '    p_p.MostrarCandidatos()
+            'Next
         Next
     End Sub
+
+    Function MenuPrincipal() As Byte
+        Dim opc As Byte = 0
+        While opc <= 0 Or opc > 4
+            Console.WriteLine("SELECCIONE UNA OPCION" & vbNewLine)
+            Console.WriteLine("{0}. ADMINISTRAR", 1)
+            Console.WriteLine("{0}. CONSULTAS", 2)
+            Console.WriteLine("{0}. SUFRAGAR", 3)
+            Console.WriteLine("{0}. CERRAR", 4)
+            Try
+                opc = Console.ReadLine
+            Catch ex As Exception
+                Console.WriteLine("ERROR - INSERTE UN NUMERO")
+                opc = 0
+            End Try
+        End While
+
+
+        Return opc
+    End Function
+
+
 End Module
