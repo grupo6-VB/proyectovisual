@@ -104,7 +104,7 @@ Public Class Mesa
 
         End While
         Console.WriteLine()
-        Console.WriteLine("CEDULA COMPLETA ----- PROCEDIENDO A VOTAR")
+        Console.WriteLine("CONSULTANDO DATOS .....")
         Console.ReadLine()
 
         Dim vot As Persona = New Persona()
@@ -119,21 +119,89 @@ Public Class Mesa
 
     Public Sub ProcesoVotacion()
         Dim votante As Persona = VerificarVotante()
-
         If votante.Nombre = "" Then
             Console.WriteLine("NO SE ENCUENTRA EN EL PADRON")
+            Exit Sub
         Else
             votante.MostrarDatos()
         End If
 
         If votante.EstadoSufragio Then
-            Console.WriteLine("UD YA EJERCIO SU DERECHO AL VOTO")
+            Console.WriteLine("UD YA EJERCIO SU DERECHO AL VOTO" & vbNewLine)
             Console.ReadLine()
             Exit Sub
+        Else
+            Dim partidos As ArrayList = CargarCandidatos()
+            Dim tipo_cargo As Byte = 1
+            Dim candidatos_actuales As ArrayList = New ArrayList()
+            For Each part_poli As Partido_Politico In partidos
+                For Each cand As Candidato In part_poli.Candidatos
+                    If cand.Cargo = "PRESIDENTE" Then
+                        candidatos_actuales.Add(cand)
+                        'cand.MostrarDatosC()
+                        'Console.WriteLine(" ---> " & part_poli.Nombre & vbNewLine)
+                    End If
+                Next
+            Next
+            Dim opc As Byte = 0
+            Do While opc <= 0 Or opc > candidatos_actuales.Count
+                Console.WriteLine("CANDIDATOS A : --------")
+                For Each cand As Candidato In candidatos_actuales
+                    cand.MostrarDatosC()
+                    Console.WriteLine()
+                    'Console.WriteLine(" ---> " & part_poli.Nombre & vbNewLine)
+                Next
+
+                Try
+                    Console.Write("ESCRIBA LA OPCION A ELEGIR: ")
+                    opc = Console.ReadLine()
+                Catch ex As Exception
+                    Console.WriteLine(vbNewLine & "INGRESE SOLO NUMEROS")
+                End Try
+
+            Loop
+            Dim c As Candidato = candidatos_actuales.Item(opc - 1)
+            Console.WriteLine("UD HA ELEGIDO")
+            c.MostrarDatosC()
+
         End If
 
         Console.ReadLine()
     End Sub
 
+    Private Function CargarCandidatos() As ArrayList
+        Dim part_politicos As ArrayList = New ArrayList()
+        Dim path As String = "POLITICA/PARTIDOSPOLITICOS.xml"
+        Dim xmlDoc As New XmlDocument()
+        xmlDoc.Load(path)
+        Dim politica As XmlNodeList = xmlDoc.GetElementsByTagName("politica")
+        For Each pol As XmlNode In politica
+            For Each partido As XmlNode In pol
+                'Console.WriteLine(partido.Name)
+                Dim p_p As Partido_Politico = New Partido_Politico(partido.Attributes("id").Value, partido.Attributes("nombre").Value)
+                For Each candidato As XmlNode In partido
+                    Dim cand As Candidato = New Candidato(candidato.Attributes("id").Value, candidato.Attributes("cargo").Value)
+                    For Each nodo As XmlNode In candidato.ChildNodes
+                        Select Case nodo.Name
+                            Case "nombre"
+                                cand.Nombre = nodo.InnerText
+                            Case "apellido"
+                                cand.Apellido = nodo.InnerText
+                            Case "votos"
+                                cand.EstadoSufragio = CInt(nodo.InnerText)
+                            Case Else
+                        End Select
+                    Next
+                    p_p.AgregarCandidato(cand)
+                Next
+                part_politicos.Add(p_p)
+            Next
 
+            'For Each p_p As Partido_Politico In part_politicos
+            '    Console.WriteLine()
+            '    p_p.MostrarCandidatos()
+            'Next
+        Next
+        Return part_politicos
+    End Function
 End Class

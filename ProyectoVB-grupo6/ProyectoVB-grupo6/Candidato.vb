@@ -36,7 +36,21 @@
     End Sub
 
     Public Sub MostrarDatosC()
-        Console.WriteLine(Me.Nombre & "    " & Me.Apellido & "      " & Me.Cargo)
+        Console.Write(Me.Nombre)
+        If Me.Nombre.Length < 7 Then
+            Console.Write(vbTab & vbTab)
+        Else
+            Console.Write(vbTab)
+        End If
+        Console.Write(Me.Apellido)
+        If Me.Apellido.Length < 7 Then
+            Console.Write(vbTab & vbTab)
+        Else
+            Console.Write(vbTab)
+        End If
+        Console.Write(Me.Cargo)
+        
+        'Console.Write(Me.Nombre & vbTab & Me.Apellido & vbTab & Me.Cargo)
     End Sub
 
 End Class
