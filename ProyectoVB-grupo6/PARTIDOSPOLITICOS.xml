@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<politica>
+    <partido id="35" nombre="ALIANZA PAIS">
+	<candidato id="1" cargo="PRESIDENTE">
+	    <nombre>LENIN</nombre>
+	    <apellido>MORENO</apellido>
+	    <votos>0</votos>
+        </candidato>
+	<candidato id="2" cargo="VICEPRESIDENTE">
+	    <nombre>JORGE</nombre>
+	    <apellido>GLASS</apellido>
+	    <votos>0</votos>
+        </candidato>
+	<candidato id="3" cargo="ASAMBLEISTA">
+	    <nombre>VIVANA</nombre>
+	    <apellido>BONILLA</apellido>
+	    <votos>2</votos>
+        </candidato>
+	<candidato id="4" cargo="ASAMBLEISTA">
+	    <nombre>MAURICIO</nombre>
+	    <apellido>SERRANO</apellido>
+	    <votos>1</votos>
+        </candidato>	
+    </partido>
+    <partido id="21" nombre="CREO">
+	<candidato id="5" cargo="PRESIDENTE">
+	    <nombre>GUILLERMO</nombre>
+	    <apellido>LASSO</apellido>
+	    <votos>0</votos>
+        </candidato>
+	<candidato id="6" cargo="VICEPRESIDENTE">
+	    <nombre>ALFREDO</nombre>
+	    <apellido>PAEZ</apellido>
+	    <votos>0</votos>
+        </candidato>
+	<candidato id="7" cargo="ASAMBLEISTA">
+	    <nombre>PAUL</nombre>
+	    <apellido>OLSEN</apellido>
+	    <votos>1</votos>
+        </candidato>
+	<candidato id="8" cargo="ASAMBLEISTA">
+	    <nombre>TIKO</nombre>
+	    <apellido>TIKO</apellido>
+	    <votos>3</votos>
+        </candidato>	
+    </partido>
+</politica>

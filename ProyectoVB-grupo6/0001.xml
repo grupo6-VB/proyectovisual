@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<mesa>
+    <padron>
+	<votante cedula="0926476169">
+	    <nombre>HECTOR</nombre>
+	    <apellido>CHIMBO</apellido>
+	    <estadoSufragio>FALSE</estadoSufragio>
+        </votante>
+	<votante cedula="1111111111">
+	    <nombre>RONNY</nombre>
+	    <apellido>SABANDO</apellido>
+	    <estadoSufragio>TRUE</estadoSufragio>
+        </votante>
+	<votante cedula="2222222222">
+	    <nombre>DAVID</nombre>
+	    <apellido>JURADO</apellido>
+	    <estadoSufragio>FALSE</estadoSufragio>
+        </votante>
+	<votante cedula="3333333333">
+	    <nombre>WACHO</nombre>
+	    <apellido>QUIMI</apellido>
+	    <estadoSufragio>FALSE</estadoSufragio>
+        </votante>
+    </padron>
+</mesa>
