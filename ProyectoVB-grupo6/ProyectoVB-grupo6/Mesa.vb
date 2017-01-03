@@ -42,7 +42,7 @@ Public Class Mesa
     End Sub
 
     Public Sub CargarPadron()
-        Dim path As String = "MESAS/" & Me.NrodeMesa & ".xml"
+        Dim path As String = "DATOS.xml"
         Dim xmlDoc As New XmlDocument()
         xmlDoc.Load(path)
         Dim padron As XmlNodeList = xmlDoc.GetElementsByTagName("votante")
@@ -131,38 +131,71 @@ Public Class Mesa
             Console.ReadLine()
             Exit Sub
         Else
+            Dim dignidades As ArrayList = CargarDignidades()
             Dim partidos As ArrayList = CargarCandidatos()
             Dim tipo_cargo As Byte = 1
-            Dim candidatos_actuales As ArrayList = New ArrayList()
-            For Each part_poli As Partido_Politico In partidos
-                For Each cand As Candidato In part_poli.Candidatos
-                    If cand.Cargo = "PRESIDENTE" Then
-                        candidatos_actuales.Add(cand)
-                        'cand.MostrarDatosC()
+            For Each dignidad As Dignidad In dignidades
+                Dim candidatos_actuales As ArrayList = New ArrayList()
+                For Each part_poli As Partido_Politico In partidos
+                    For Each cand As Candidato In part_poli.Candidatos
+                        If cand.Cargo = CStr(dignidad.Id) Then
+                            candidatos_actuales.Add(cand)
+                            'cand.MostrarDatosC()
+                            'Console.WriteLine(" ---> " & part_poli.Nombre & vbNewLine)
+                        End If
+                    Next
+                Next
+                Dim opc As Byte = 0
+                Do While opc <= 0 Or opc > candidatos_actuales.Count
+                    Console.WriteLine("CANDIDATOS A : " & dignidad.Nombre)
+                    For Each cand As Candidato In candidatos_actuales
+                        cand.MostrarDatosC()
+                        Console.WriteLine()
                         'Console.WriteLine(" ---> " & part_poli.Nombre & vbNewLine)
-                    End If
-                Next
+                    Next
+
+                    Try
+                        Console.Write("ESCRIBA LA OPCION A ELEGIR: ")
+                        opc = Console.ReadLine()
+                    Catch ex As Exception
+                        Console.WriteLine(vbNewLine & "INGRESE SOLO NUMEROS")
+                    End Try
+
+                Loop
+                Dim c As Candidato = candidatos_actuales.Item(opc - 1)
+                Console.WriteLine("UD HA ELEGIDO")
+                c.MostrarDatosC()
             Next
-            Dim opc As Byte = 0
-            Do While opc <= 0 Or opc > candidatos_actuales.Count
-                Console.WriteLine("CANDIDATOS A : --------")
-                For Each cand As Candidato In candidatos_actuales
-                    cand.MostrarDatosC()
-                    Console.WriteLine()
-                    'Console.WriteLine(" ---> " & part_poli.Nombre & vbNewLine)
-                Next
+            'Dim candidatos_actuales As ArrayList = New ArrayList()
+            'For Each part_poli As Partido_Politico In partidos
+            '    For Each cand As Candidato In part_poli.Candidatos
+            '        If cand.Cargo = "1" Then
+            '            candidatos_actuales.Add(cand)
+            '            'cand.MostrarDatosC()
+            '            'Console.WriteLine(" ---> " & part_poli.Nombre & vbNewLine)
+            '        End If
+            '    Next
+            'Next
+            'Dim opc As Byte = 0
+            'Do While opc <= 0 Or opc > candidatos_actuales.Count
+            '    Console.WriteLine("CANDIDATOS A : --------")
+            '    For Each cand As Candidato In candidatos_actuales
+            '        cand.MostrarDatosC()
+            '        Console.WriteLine()
+            '        'Console.WriteLine(" ---> " & part_poli.Nombre & vbNewLine)
+            '    Next
 
-                Try
-                    Console.Write("ESCRIBA LA OPCION A ELEGIR: ")
-                    opc = Console.ReadLine()
-                Catch ex As Exception
-                    Console.WriteLine(vbNewLine & "INGRESE SOLO NUMEROS")
-                End Try
+            '    Try
+            '        Console.Write("ESCRIBA LA OPCION A ELEGIR: ")
+            '        opc = Console.ReadLine()
+            '    Catch ex As Exception
+            '        Console.WriteLine(vbNewLine & "INGRESE SOLO NUMEROS")
+            '    End Try
 
-            Loop
-            Dim c As Candidato = candidatos_actuales.Item(opc - 1)
-            Console.WriteLine("UD HA ELEGIDO")
-            c.MostrarDatosC()
+            'Loop
+            'Dim c As Candidato = candidatos_actuales.Item(opc - 1)
+            'Console.WriteLine("UD HA ELEGIDO")
+            'c.MostrarDatosC()
 
         End If
 
@@ -171,7 +204,7 @@ Public Class Mesa
 
     Private Function CargarCandidatos() As ArrayList
         Dim part_politicos As ArrayList = New ArrayList()
-        Dim path As String = "POLITICA/PARTIDOSPOLITICOS.xml"
+        Dim path As String = "DATOS.xml"
         Dim xmlDoc As New XmlDocument()
         xmlDoc.Load(path)
         Dim politica As XmlNodeList = xmlDoc.GetElementsByTagName("politica")
@@ -180,7 +213,7 @@ Public Class Mesa
                 'Console.WriteLine(partido.Name)
                 Dim p_p As Partido_Politico = New Partido_Politico(partido.Attributes("id").Value, partido.Attributes("nombre").Value)
                 For Each candidato As XmlNode In partido
-                    Dim cand As Candidato = New Candidato(candidato.Attributes("id").Value, candidato.Attributes("cargo").Value)
+                    Dim cand As Candidato = New Candidato(candidato.Attributes("id").Value, candidato.Attributes("dignidad").Value)
                     For Each nodo As XmlNode In candidato.ChildNodes
                         Select Case nodo.Name
                             Case "nombre"
@@ -203,5 +236,19 @@ Public Class Mesa
             'Next
         Next
         Return part_politicos
+    End Function
+
+    Private Function CargarDignidades() As ArrayList
+        Dim dignidades As ArrayList = New ArrayList()
+        Dim path As String = "DATOS.xml"
+        Dim xmlDoc As New XmlDocument()
+        xmlDoc.Load(path)
+        Dim lista_dignidades As XmlNodeList = xmlDoc.GetElementsByTagName("dignidad")
+        For Each dignidad As XmlNode In lista_dignidades
+            Console.WriteLine(dignidad.Name)
+            Dim dig As Dignidad = New Dignidad(dignidad.Attributes("nombre").Value, CInt(dignidad.Attributes("id").Value), CInt(dignidad.Attributes("max").Value))
+            dignidades.Add(dig)
+        Next
+        Return dignidades
     End Function
 End Class

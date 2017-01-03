@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="Administrador.vb" />
     <Compile Include="Candidato.vb" />
+    <Compile Include="Dignidad.vb" />
     <Compile Include="Mesa.vb" />
     <Compile Include="Module1.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

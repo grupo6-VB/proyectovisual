@@ -1,5 +1,16 @@
 ﻿Public Class Candidato
     Inherits Persona
+
+    Private _seleccion As Boolean 
+    Public Property Seleccion() As Boolean
+        Get
+            Return _seleccion
+        End Get
+        Set(ByVal value As Boolean)
+            _seleccion = value
+        End Set
+    End Property
+
     Private _id As Integer
     Public Property Id() As Integer
         Get
@@ -50,6 +61,29 @@
         End If
         Console.Write(Me.Cargo)
         
+        'Console.Write(Me.Nombre & vbTab & Me.Apellido & vbTab & Me.Cargo)
+    End Sub
+
+    Public Sub MostrarDatos_D()
+        If Seleccion Then
+            Console.ForegroundColor = ConsoleColor.Yellow
+        Else
+            Console.ForegroundColor = ConsoleColor.White
+        End If
+        Console.Write(Me.Nombre)
+        If Me.Nombre.Length < 7 Then
+            Console.Write(vbTab & vbTab)
+        Else
+            Console.Write(vbTab)
+        End If
+        Console.Write(Me.Apellido)
+        If Me.Apellido.Length < 7 Then
+            Console.Write(vbTab & vbTab)
+        Else
+            Console.Write(vbTab)
+        End If
+        Console.Write(Me.Cargo)
+
         'Console.Write(Me.Nombre & vbTab & Me.Apellido & vbTab & Me.Cargo)
     End Sub
 
