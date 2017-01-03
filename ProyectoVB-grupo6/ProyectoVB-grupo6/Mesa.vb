@@ -140,65 +140,61 @@ Public Class Mesa
                     For Each cand As Candidato In part_poli.Candidatos
                         If cand.Cargo = CStr(dignidad.Id) Then
                             candidatos_actuales.Add(cand)
-                            'cand.MostrarDatosC()
-                            'Console.WriteLine(" ---> " & part_poli.Nombre & vbNewLine)
                         End If
                     Next
                 Next
                 Dim opc As Byte = 0
-                Do While opc <= 0 Or opc > candidatos_actuales.Count
-                    Console.WriteLine("CANDIDATOS A : " & dignidad.Nombre)
-                    For Each cand As Candidato In candidatos_actuales
-                        cand.MostrarDatosC()
-                        Console.WriteLine()
-                        'Console.WriteLine(" ---> " & part_poli.Nombre & vbNewLine)
-                    Next
+                If candidatos_actuales.Count = 0 Then
+                    Console.WriteLine("NO EXISTEN CANDIDATOS PARA ESTA DIGNIDAD")
+                Else
+                    Dim opc_tipoVoto As Byte = 0
+                    Do While opc <= 0 Or opc > candidatos_actuales.Count
+                        Console.WriteLine("CANDIDATOS A : " & dignidad.Nombre)
+                        Dim it As Byte = 1
+                        For Each cand As Candidato In candidatos_actuales
+                            Console.Write(it & ".- ")
+                            cand.MostrarDatos_D()
+                            it += 1
+                            'Console.WriteLine()
+                        Next
 
-                    Try
-                        Console.Write("ESCRIBA LA OPCION A ELEGIR: ")
-                        opc = Console.ReadLine()
-                    Catch ex As Exception
-                        Console.WriteLine(vbNewLine & "INGRESE SOLO NUMEROS")
-                    End Try
+                        'Try
+                        '    Console.Write("ESCRIBA LA OPCION A ELEGIR: ")
+                        '    opc = Console.ReadLine()
 
-                Loop
-                Dim c As Candidato = candidatos_actuales.Item(opc - 1)
-                Console.WriteLine("UD HA ELEGIDO")
-                c.MostrarDatosC()
+                        'Catch ex As Exception
+                        '    Console.WriteLine(vbNewLine & "INGRESE SOLO NUMEROS")
+                        'End Try
+
+
+                        While opc_tipoVoto <= 0 Or opc_tipoVoto > 4
+                            Console.WriteLine("SELECCIONE UN TIPO DE SUFRAGIO:")
+                            Console.WriteLine("{0}. SELECCION UNO A UNO", 1)
+                            Console.WriteLine("{0}. VOTO EN PLANCHA", 2)
+                            Console.WriteLine("{0}. VOTO EN BLANCO", 3)
+                            Console.WriteLine("{0}. VOTO NULO", 4)
+                            Try
+                                opc_tipoVoto = Console.ReadLine()
+                            Catch ex As Exception
+                                Console.WriteLine("ERROR - INSERTE UN NUMERO")
+                                opc_tipoVoto = 0
+                            End Try
+                        End While
+                    Loop
+
+                    Select Case opc_tipoVoto
+                        Case 1
+                            Eleccion_Uno_Uno(dignidad.CantElegir, candidatos_actuales)
+                        Case Else
+                    End Select
+
+                    'Dim c As Candidato = candidatos_actuales.Item(opc - 1)
+                    'c.Seleccion = True
+                    'Console.WriteLine("UD HA ELEGIDO")
+                    'c.MostrarDatos_D()
+                End If
             Next
-            'Dim candidatos_actuales As ArrayList = New ArrayList()
-            'For Each part_poli As Partido_Politico In partidos
-            '    For Each cand As Candidato In part_poli.Candidatos
-            '        If cand.Cargo = "1" Then
-            '            candidatos_actuales.Add(cand)
-            '            'cand.MostrarDatosC()
-            '            'Console.WriteLine(" ---> " & part_poli.Nombre & vbNewLine)
-            '        End If
-            '    Next
-            'Next
-            'Dim opc As Byte = 0
-            'Do While opc <= 0 Or opc > candidatos_actuales.Count
-            '    Console.WriteLine("CANDIDATOS A : --------")
-            '    For Each cand As Candidato In candidatos_actuales
-            '        cand.MostrarDatosC()
-            '        Console.WriteLine()
-            '        'Console.WriteLine(" ---> " & part_poli.Nombre & vbNewLine)
-            '    Next
-
-            '    Try
-            '        Console.Write("ESCRIBA LA OPCION A ELEGIR: ")
-            '        opc = Console.ReadLine()
-            '    Catch ex As Exception
-            '        Console.WriteLine(vbNewLine & "INGRESE SOLO NUMEROS")
-            '    End Try
-
-            'Loop
-            'Dim c As Candidato = candidatos_actuales.Item(opc - 1)
-            'Console.WriteLine("UD HA ELEGIDO")
-            'c.MostrarDatosC()
-
         End If
-
         Console.ReadLine()
     End Sub
 
@@ -210,7 +206,6 @@ Public Class Mesa
         Dim politica As XmlNodeList = xmlDoc.GetElementsByTagName("politica")
         For Each pol As XmlNode In politica
             For Each partido As XmlNode In pol
-                'Console.WriteLine(partido.Name)
                 Dim p_p As Partido_Politico = New Partido_Politico(partido.Attributes("id").Value, partido.Attributes("nombre").Value)
                 For Each candidato As XmlNode In partido
                     Dim cand As Candidato = New Candidato(candidato.Attributes("id").Value, candidato.Attributes("dignidad").Value)
@@ -229,11 +224,6 @@ Public Class Mesa
                 Next
                 part_politicos.Add(p_p)
             Next
-
-            'For Each p_p As Partido_Politico In part_politicos
-            '    Console.WriteLine()
-            '    p_p.MostrarCandidatos()
-            'Next
         Next
         Return part_politicos
     End Function
@@ -251,4 +241,30 @@ Public Class Mesa
         Next
         Return dignidades
     End Function
+
+    Public Sub Eleccion_Uno_Uno(max As Integer, candidatos As ArrayList)
+        Dim cant As Integer = 0
+        Dim terminar As Boolean = False
+        Dim opc As Integer = 0
+        While cant <= max Or terminar
+            Console.WriteLine("ESCRIBA EL NUMERO DEL CANDIDATO DE SU PREFERENCIA Y PRESIONE ENTER")
+            Dim numero As Byte = 1
+            For Each candidato As Candidato In candidatos
+                candidato.MostrarDatos_D()
+                numero += 1
+            Next
+            Try
+                opc = Console.ReadLine()
+                cant += 1
+                Dim c As Candidato = candidatos.Item(opc - 1)
+                c.Seleccion = True
+            Catch ex As Exception
+                Console.WriteLine("ERROR - INSERTE UN NUMERO")
+
+            End Try
+        End While
+
+
+
+    End Sub
 End Class

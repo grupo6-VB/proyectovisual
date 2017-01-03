@@ -48,13 +48,13 @@
 
     Public Sub MostrarDatosC()
         Console.Write(Me.Nombre)
-        If Me.Nombre.Length < 7 Then
+        If Me.Nombre.Length <= 4 Then
             Console.Write(vbTab & vbTab)
         Else
             Console.Write(vbTab)
         End If
         Console.Write(Me.Apellido)
-        If Me.Apellido.Length < 7 Then
+        If Me.Apellido.Length <= 5 Then
             Console.Write(vbTab & vbTab)
         Else
             Console.Write(vbTab)
@@ -71,19 +71,19 @@
             Console.ForegroundColor = ConsoleColor.White
         End If
         Console.Write(Me.Nombre)
-        If Me.Nombre.Length < 7 Then
+        If Me.Nombre.Length <= 3 Then
             Console.Write(vbTab & vbTab)
         Else
             Console.Write(vbTab)
         End If
         Console.Write(Me.Apellido)
-        If Me.Apellido.Length < 7 Then
-            Console.Write(vbTab & vbTab)
+        If Me.Apellido.Length <= 5 Then
+            Console.WriteLine(vbTab & vbTab)
         Else
-            Console.Write(vbTab)
+            Console.WriteLine(vbTab)
         End If
-        Console.Write(Me.Cargo)
-
+        'Console.Write(Me.Cargo)
+        Console.ForegroundColor = ConsoleColor.White
         'Console.Write(Me.Nombre & vbTab & Me.Apellido & vbTab & Me.Cargo)
     End Sub
 
