@@ -148,45 +148,48 @@ Public Class Mesa
                     Console.WriteLine("NO EXISTEN CANDIDATOS PARA ESTA DIGNIDAD")
                 Else
                     Dim opc_tipoVoto As Byte = 0
-                    Do While opc <= 0 Or opc > candidatos_actuales.Count
-                        Console.WriteLine("CANDIDATOS A : " & dignidad.Nombre)
-                        Dim it As Byte = 1
-                        For Each cand As Candidato In candidatos_actuales
-                            Console.Write(it & ".- ")
-                            cand.MostrarDatos_D()
-                            it += 1
-                            'Console.WriteLine()
-                        Next
+                    'Do While opc <= 0 Or opc > candidatos_actuales.Count
+                    Console.WriteLine("CANDIDATOS A : " & dignidad.Nombre)
+                    Dim it As Byte = 1
+                    For Each cand As Candidato In candidatos_actuales
+                        Console.Write(it & ".- ")
+                        cand.MostrarDatos_D()
+                        it += 1
+                        'Console.WriteLine()
+                    Next
 
-                        'Try
-                        '    Console.Write("ESCRIBA LA OPCION A ELEGIR: ")
-                        '    opc = Console.ReadLine()
+                    'Try
+                    '    Console.Write("ESCRIBA LA OPCION A ELEGIR: ")
+                    '    opc = Console.ReadLine()
 
-                        'Catch ex As Exception
-                        '    Console.WriteLine(vbNewLine & "INGRESE SOLO NUMEROS")
-                        'End Try
+                    'Catch ex As Exception
+                    '    Console.WriteLine(vbNewLine & "INGRESE SOLO NUMEROS")
+                    'End Try
 
 
-                        While opc_tipoVoto <= 0 Or opc_tipoVoto > 4
-                            Console.WriteLine("SELECCIONE UN TIPO DE SUFRAGIO:")
-                            Console.WriteLine("{0}. SELECCION UNO A UNO", 1)
-                            Console.WriteLine("{0}. VOTO EN PLANCHA", 2)
-                            Console.WriteLine("{0}. VOTO EN BLANCO", 3)
-                            Console.WriteLine("{0}. VOTO NULO", 4)
-                            Try
-                                opc_tipoVoto = Console.ReadLine()
-                            Catch ex As Exception
-                                Console.WriteLine("ERROR - INSERTE UN NUMERO")
-                                opc_tipoVoto = 0
-                            End Try
-                        End While
-                    Loop
+                    While opc_tipoVoto <= 0 Or opc_tipoVoto > 4
+                        Console.WriteLine("SELECCIONE UN TIPO DE SUFRAGIO:")
+                        Console.WriteLine("{0}. SELECCION UNO A UNO", 1)
+                        Console.WriteLine("{0}. VOTO EN PLANCHA", 2)
+                        Console.WriteLine("{0}. VOTO EN BLANCO", 3)
+                        Console.WriteLine("{0}. VOTO NULO", 4)
+                        Try
+                            opc_tipoVoto = Console.ReadLine()
+                            Select Case opc_tipoVoto
+                                Case 1
+                                    Eleccion_Uno_Uno(dignidad.CantElegir, candidatos_actuales)
+                                Case 3
+                                    Exit While
+                                Case Else
+                            End Select
+                        Catch ex As Exception
+                            Console.WriteLine("ERROR - INSERTE UN NUMERO")
+                            opc_tipoVoto = 0
+                        End Try
+                    End While
+                    'Loop
 
-                    Select Case opc_tipoVoto
-                        Case 1
-                            Eleccion_Uno_Uno(dignidad.CantElegir, candidatos_actuales)
-                        Case Else
-                    End Select
+                   
 
                     'Dim c As Candidato = candidatos_actuales.Item(opc - 1)
                     'c.Seleccion = True
