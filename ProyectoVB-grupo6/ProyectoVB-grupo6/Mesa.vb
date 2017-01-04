@@ -249,7 +249,7 @@ Public Class Mesa
         Dim cant As Integer = 0
         Dim terminar As Boolean = False
         Dim opc As Integer = 0
-        While cant <= max Or terminar
+        While cant < max Or terminar
             Console.WriteLine("ESCRIBA EL NUMERO DEL CANDIDATO DE SU PREFERENCIA Y PRESIONE ENTER")
             Dim numero As Byte = 1
             For Each candidato As Candidato In candidatos
@@ -258,16 +258,74 @@ Public Class Mesa
             Next
             Try
                 opc = Console.ReadLine()
-                cant += 1
+
                 Dim c As Candidato = candidatos.Item(opc - 1)
-                c.Seleccion = True
+                If c.Seleccion Then
+                    Console.WriteLine("candidato ya seleccionado")
+                Else
+                    c.Seleccion = True
+                    cant += 1
+                End If
+
             Catch ex As Exception
                 Console.WriteLine("ERROR - INSERTE UN NUMERO")
-
             End Try
         End While
 
+        Console.WriteLine("proceso de guardado")
+        GrabarVotos(candidatos)
+        'aqui el procedimiento de guardado
+    End Sub
+
+    Public Sub GrabarVotos(candidatos As ArrayList)
+        'Dim part_politicos As ArrayList = New ArrayList()
+        Dim path As String = "DATOS.xml"
+        Dim xmlDoc As New XmlDocument()
+        xmlDoc.Load(path)
+        Dim politica As XmlNodeList = xmlDoc.GetElementsByTagName("politica")
+        For Each pol As XmlNode In politica
+            For Each partido As XmlNode In pol
+                For Each candidato As XmlNode In partido
+                    For Each c As Candidato In candidatos
+                        If c.Id = CInt(candidato.Attributes("id").Value) Then
+                            Console.WriteLine("COINCIDENTE")
+                            If c.Seleccion Then
+                                Console.WriteLine("TIENE VOTO")
+                                Dim votos As Integer = 0
+                                For Each nodo As XmlNode In candidato.ChildNodes
+                                    If nodo.Name = "votos" Then
+                                        votos = CInt(nodo.InnerText)
+                                        Console.WriteLine("actual: " & votos)
+                                        votos += 1
+                                        Console.WriteLine("ahora: " & votos)
+                                        'nodo.Value = CStr(votos)
+                                        Dim n As XmlNode = xmlDoc.CreateElement("votos")
+                                        n.InnerText = CStr(votos)
+                                        candidato.RemoveChild(nodo)
+                                        candidato.AppendChild(n)
+                                        xmlDoc.Save(path)
+                                        Exit For
+                                    End If
+                                Next
+                            End If
+                        End If
+                    Next
+                Next
+            Next
+        Next
 
 
+    End Sub
+
+    Private Sub ModificarAlquilerDOM(path As String, pathW As String)
+        Dim xmlDoc As New XmlDocument()
+        xmlDoc.Load(path)
+        Dim Peliculas As XmlNodeList = xmlDoc.GetElementsByTagName("movie")
+        For Each peli As XmlNode In Peliculas
+            Console.WriteLine(peli.Name & ":" & peli.Attributes("title").Value)
+            Dim p As XmlElement = peli
+            p.SetAttribute("rented", "2")
+            xmlDoc.Save(pathW)
+        Next
     End Sub
 End Class
