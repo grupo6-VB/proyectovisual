@@ -91,9 +91,6 @@
     </Compile>
     <Compile Include="Partido_Politico.vb" />
     <Compile Include="Persona.vb" />
-    <Compile Include="Recinto.vb" />
-    <Compile Include="Votante.vb" />
-    <Compile Include="Voto.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

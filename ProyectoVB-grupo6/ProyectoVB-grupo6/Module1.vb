@@ -5,30 +5,30 @@ Module Module1
     Sub Main()
 
         Dim mesa As Mesa = New Mesa("0001")
-        mesa.CargarPadron()
-        'mesa.ListarVotantes()
-        'mesa.ProcesoVotacion()
-        'CargarCandidatos()
-        Dim opc As Byte = MenuPrincipal()
 
-        Select Case opc
-            Case 1
-            Case 2
-                Dim partidos_politicos As ArrayList = mesa.CargarCandidatos
-                Dim dignidades As ArrayList = mesa.CargarDignidades
-                Sesion_Candidato(dignidades, partidos_politicos)
-                opc = MenuPrincipal()
-            Case 3
-                mesa.ProcesoVotacion()
-                opc = MenuPrincipal()
-            Case 4
-                Console.WriteLine("GRACIAS POR SU VISITA")
-                Exit Select
-            Case Else
-                Exit Sub
-        End Select
+        Dim opc As Byte = 0
+        Do While opc < 4
+            opc = MenuPrincipal()
 
-        Console.ReadLine()
+            Select Case opc
+                Case 1
+                    Administrar()
+                    Console.Clear()
+                Case 2
+                    Dim partidos_politicos As ArrayList = mesa.CargarCandidatos
+                    Dim dignidades As ArrayList = mesa.CargarDignidades
+                    Sesion_Candidato(dignidades, partidos_politicos)
+                    Console.Clear()
+                Case 3
+                    mesa.CargarPadron()
+                    mesa.ProcesoVotacion()
+                Case 4
+                    Console.WriteLine("GRACIAS POR SU VISITA")
+                    Exit Select
+                Case Else
+                    Exit Sub
+            End Select
+        Loop
 
     End Sub
 
@@ -43,13 +43,16 @@ Module Module1
             Console.WriteLine("{0}. CERRAR", 4)
             Try
                 opc = Console.ReadLine
+                If opc <= 0 Or opc > 4 Then
+                    Console.WriteLine("ELIJA ENTRE 1 - 4")
+                End If
+
+
             Catch ex As Exception
                 Console.WriteLine("ERROR - INSERTE UN NUMERO")
                 opc = 0
             End Try
         End While
-
-
         Return opc
     End Function
 
@@ -76,6 +79,8 @@ Module Module1
             For Each c As Candidato In cand
                 If user = CStr(c.Id) And pass = c.Pass Then
                     login = True
+                    Console.Clear()
+                    Console.WriteLine(vbTab & vbTab & "   BIENVENIDO   " & vbNewLine)
                     c.MostrarDatos_D()
                     c.Seleccion = True
                     t_d = CInt(c.Cargo)
@@ -115,6 +120,47 @@ Module Module1
                 c.MostrarDatos_D()
             End If
         Next
+        System.Threading.Thread.Sleep(3000)
     End Sub
 
+    Public Sub Administrar()
+        Dim opc As Byte = 0
+        While opc <= 0 Or opc > 3
+            Console.WriteLine("SELECCIONE UNA OPCION" & vbNewLine)
+            Console.WriteLine("{0}. AGREGAR DIGNIDAD", 1)
+            Console.WriteLine("{0}. AGREGAR CANDIDATO", 2)
+            Console.WriteLine("{0}. SALIR", 3)
+            Try
+                opc = Console.ReadLine
+                If opc <= 0 Or opc > 4 Then
+                    Console.WriteLine("ELIJA ENTRE 1 - 3")
+                End If
+
+
+            Catch ex As Exception
+                Console.WriteLine("ERROR - INSERTE UN NUMERO")
+                opc = 0
+            End Try
+        End While
+
+        Select Case opc
+            Case 1
+            Case 2
+            Case 3
+                Console.WriteLine("ADIOS JEFE")
+                System.Threading.Thread.Sleep(2000)
+                Exit Sub
+        End Select
+    End Sub
+
+    Public Sub Sesion_Administrador()
+        Console.Clear()
+        Dim login As Boolean = False
+        Do Until login
+            Console.Write("USER: ")
+            Dim user As String = Console.ReadLine()
+            Console.Write("PASS: ")
+            Dim pass As String = Console.ReadLine()
+        Loop
+    End Sub
 End Module

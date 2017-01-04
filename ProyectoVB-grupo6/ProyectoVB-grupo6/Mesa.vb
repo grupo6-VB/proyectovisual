@@ -105,8 +105,7 @@ Public Class Mesa
         End While
         Console.WriteLine()
         Console.WriteLine("CONSULTANDO DATOS .....")
-
-        Console.ReadLine()
+        System.Threading.Thread.Sleep(3000)
 
         Dim vot As Persona = New Persona()
         For Each votante As Persona In Me.Padron
@@ -124,14 +123,17 @@ Public Class Mesa
             Console.WriteLine("NO SE ENCUENTRA EN EL PADRON")
             Exit Sub
         Else
+            Console.ForegroundColor = ConsoleColor.Green
             votante.MostrarDatos()
+            Console.ForegroundColor = ConsoleColor.White
         End If
 
         If votante.EstadoSufragio Then
-            Console.WriteLine("UD YA EJERCIO SU DERECHO AL VOTO" & vbNewLine)
-            Console.ReadLine()
+            Console.WriteLine("UD YA EJERCIO SU DERECHO AL VOTO" & vbNewLine & "EL SISTEMA SE CERRARÁ PARA USTED")
+            System.Threading.Thread.Sleep(3000)
             Exit Sub
         Else
+            votante.GuardarEstadoSufragio(votante.Cedula)
             Dim dignidades As ArrayList = CargarDignidades()
             Dim partidos As ArrayList = CargarCandidatos()
             Dim tipo_cargo As Byte = 1
@@ -149,8 +151,9 @@ Public Class Mesa
                     Console.WriteLine("NO EXISTEN CANDIDATOS PARA ESTA DIGNIDAD")
                 Else
                     Dim opc_tipoVoto As Byte = 0
-
-                    Console.WriteLine("CANDIDATOS A : " & dignidad.Nombre)
+                    Console.ForegroundColor = ConsoleColor.Red
+                    Console.WriteLine(vbNewLine & "CANDIDATOS A : " & dignidad.Nombre & vbNewLine)
+                    Console.ForegroundColor = ConsoleColor.White
                     Dim it As Byte = 1
                     For Each cand As Candidato In candidatos_actuales
                         Console.Write(it & ".- ")
@@ -160,7 +163,7 @@ Public Class Mesa
                     Next
 
                     While opc_tipoVoto <= 0 Or opc_tipoVoto > 4
-                        Console.WriteLine("SELECCIONE UN TIPO DE SUFRAGIO:")
+                        Console.WriteLine(vbNewLine & "SELECCIONE UN TIPO DE SUFRAGIO:")
                         Console.WriteLine("{0}. SELECCION UNO A UNO", 1)
                         Console.WriteLine("{0}. VOTO EN PLANCHA", 2)
                         Console.WriteLine("{0}. VOTO EN BLANCO", 3)
@@ -174,7 +177,10 @@ Public Class Mesa
                                     Eleccion_Plancha(dignidad.Id, partidos)
                                 Case 3
                                     Exit While
+                                Case 4
+                                    Exit While
                                 Case Else
+                                    Console.WriteLine("ELIJA ENTRE 1 - 4")
                             End Select
                         Catch ex As Exception
                             Console.WriteLine("ERROR - INSERTE UN NUMERO")
@@ -183,8 +189,11 @@ Public Class Mesa
                     End While
                 End If
             Next
+            Console.WriteLine("GRACIAS POR CUMPLIR CON SU DERECHO")
+            System.Threading.Thread.Sleep(3000)
+            Console.Clear()
         End If
-        Console.ReadLine()
+
     End Sub
 
     Public Function CargarCandidatos() As ArrayList
@@ -226,7 +235,7 @@ Public Class Mesa
         xmlDoc.Load(path)
         Dim lista_dignidades As XmlNodeList = xmlDoc.GetElementsByTagName("dignidad")
         For Each dignidad As XmlNode In lista_dignidades
-            Console.WriteLine(dignidad.Name)
+            'Console.WriteLine(dignidad.Name)
             Dim dig As Dignidad = New Dignidad(dignidad.Attributes("nombre").Value, CInt(dignidad.Attributes("id").Value), CInt(dignidad.Attributes("max").Value))
             dignidades.Add(dig)
         Next
@@ -277,17 +286,16 @@ Public Class Mesa
                 For Each candidato As XmlNode In partido
                     For Each c As Candidato In candidatos
                         If c.Id = CInt(candidato.Attributes("id").Value) Then
-                            Console.WriteLine("COINCIDENTE")
+                            'Console.WriteLine("COINCIDENTE")
                             If c.Seleccion Then
-                                Console.WriteLine("TIENE VOTO")
+                                'Console.WriteLine("TIENE VOTO")
                                 Dim votos As Integer = 0
                                 For Each nodo As XmlNode In candidato.ChildNodes
                                     If nodo.Name = "votos" Then
                                         votos = CInt(nodo.InnerText)
-                                        Console.WriteLine("actual: " & votos)
+                                        'Console.WriteLine("actual: " & votos)
                                         votos += 1
-                                        Console.WriteLine("ahora: " & votos)
-                                        'nodo.Value = CStr(votos)
+                                        'Console.WriteLine("ahora: " & votos)
                                         Dim n As XmlNode = xmlDoc.CreateElement("votos")
                                         n.InnerText = CStr(votos)
                                         candidato.RemoveChild(nodo)
