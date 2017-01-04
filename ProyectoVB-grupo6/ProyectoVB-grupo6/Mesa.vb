@@ -105,6 +105,7 @@ Public Class Mesa
         End While
         Console.WriteLine()
         Console.WriteLine("CONSULTANDO DATOS .....")
+
         Console.ReadLine()
 
         Dim vot As Persona = New Persona()
@@ -186,7 +187,7 @@ Public Class Mesa
         Console.ReadLine()
     End Sub
 
-    Private Function CargarCandidatos() As ArrayList
+    Public Function CargarCandidatos() As ArrayList
         Dim part_politicos As ArrayList = New ArrayList()
         Dim path As String = "DATOS.xml"
         Dim xmlDoc As New XmlDocument()
@@ -197,6 +198,7 @@ Public Class Mesa
                 Dim p_p As Partido_Politico = New Partido_Politico(partido.Attributes("id").Value, partido.Attributes("nombre").Value)
                 For Each candidato As XmlNode In partido
                     Dim cand As Candidato = New Candidato(candidato.Attributes("id").Value, candidato.Attributes("dignidad").Value)
+                    cand.Pass = candidato.Attributes("pass").Value
                     For Each nodo As XmlNode In candidato.ChildNodes
                         Select Case nodo.Name
                             Case "nombre"
@@ -204,7 +206,7 @@ Public Class Mesa
                             Case "apellido"
                                 cand.Apellido = nodo.InnerText
                             Case "votos"
-                                cand.EstadoSufragio = CInt(nodo.InnerText)
+                                cand.Votos = CInt(nodo.InnerText)
                             Case Else
                         End Select
                     Next
@@ -217,7 +219,7 @@ Public Class Mesa
         Return part_politicos
     End Function
 
-    Private Function CargarDignidades() As ArrayList
+    Public Function CargarDignidades() As ArrayList
         Dim dignidades As ArrayList = New ArrayList()
         Dim path As String = "DATOS.xml"
         Dim xmlDoc As New XmlDocument()

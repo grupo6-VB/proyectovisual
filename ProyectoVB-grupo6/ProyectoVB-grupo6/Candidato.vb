@@ -31,13 +31,23 @@
         End Set
     End Property
 
-    Private _partido As String 'dignidad a la que aspira ejem: PRESIDENTE, ASAMBLEISTA, ETC
+    Private _partido As String 'nombre del partido politico en el que milita
     Public Property Partido() As String
         Get
             Return _partido
         End Get
         Set(ByVal value As String)
             _partido = value
+        End Set
+    End Property
+
+    Private _pass As String 'clave para acceder a las consultas en linea
+    Public Property Pass() As String
+        Get
+            Return _pass
+        End Get
+        Set(ByVal value As String)
+            _pass = value
         End Set
     End Property
 
