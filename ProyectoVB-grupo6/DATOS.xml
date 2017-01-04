@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<datos>
+  <administrador>
+    <user>admin</user>
+    <pass>12345</pass>
+  </administrador>  
+  <dignidades>
+    <dignidad nombre="BINOMIO PRESIDENCIAL" id="1" max="1" />
+    <dignidad nombre="ASAMBLEISTA NACIONAL" id="2" max="5" />
+    <dignidad nombre="PARLAMENTO ANDINO" id="3" max="2" />
+  </dignidades>
+  <mesa>
+    <padron>
+      <votante cedula="0926476169">
+        <nombre>HECTOR</nombre>
+        <apellido>CHIMBO</apellido>
+        <estadoSufragio>FALSE</estadoSufragio>
+      </votante>
+      <votante cedula="1111111111">
+        <nombre>RONNY</nombre>
+        <apellido>SABANDO</apellido>
+        <estadoSufragio>TRUE</estadoSufragio>
+      </votante>
+      <votante cedula="2222222222">
+        <nombre>DAVID</nombre>
+        <apellido>JURADO</apellido>
+        <estadoSufragio>FALSE</estadoSufragio>
+      </votante>
+      <votante cedula="3333333333">
+        <nombre>WACHO</nombre>
+        <apellido>QUIMI</apellido>
+        <estadoSufragio>FALSE</estadoSufragio>
+      </votante>
+    </padron>
+  </mesa>
+  <politica>
+    <partido id="35" nombre="ALIANZA PAIS">
+      <candidato id="351" dignidad="1" pass="ap351">
+        <nombre>LENIN</nombre>
+        <apellido>MORENO</apellido>
+        <votos>2</votos>
+      </candidato>
+      <candidato id="352" dignidad="2" pass="ap352">
+        <nombre>VIVANA</nombre>
+        <apellido>BONILLA</apellido>
+        <votos>3</votos>
+      </candidato>
+      <candidato id="353" dignidad="2" pass="ap353">
+        <nombre>JOSE</nombre>
+        <apellido>SERRANO</apellido>
+        <votos>1</votos>
+      </candidato>
+      <candidato id="354" dignidad="2" pass="ap354">
+        <nombre>GABRIELA</nombre>
+        <apellido>RIVADENEIRA</apellido>
+        <votos>6</votos>
+      </candidato>
+      <candidato id="355" dignidad="2" pass="ap355">
+        <nombre>CARLOS</nombre>
+        <apellido>VITERI</apellido>
+        <votos>1</votos>
+      </candidato>
+      <candidato id="356" dignidad="2" pass="ap356">
+        <nombre>LORENA</nombre>
+        <apellido>TAPIA</apellido>
+        <votos>1</votos>
+      </candidato>
+      <candidato id="357" dignidad="3" pass="ap357">
+        <nombre>PAMELA</nombre>
+        <apellido>AGUIRRE</apellido>
+        <votos>1</votos>
+      </candidato>
+      <candidato id="358" dignidad="3" pass="ap358">
+        <nombre>EDGAR</nombre>
+        <apellido>CARRANZA</apellido>
+        <votos>1</votos>
+      </candidato>
+    </partido>
+    <partido id="21" nombre="CREO">
+      <candidato id="211" dignidad="1" pass="cr211">
+        <nombre>GUILLERMO</nombre>
+        <apellido>LASSO</apellido>
+        <votos>2</votos>
+      </candidato>
+      <candidato id="212" dignidad="2" pass="cr212">
+        <nombre>GUILLERMO</nombre>
+        <apellido>CELI</apellido>
+        <votos>2</votos>
+      </candidato>
+      <candidato id="213" dignidad="2" pass="cr213">
+        <nombre>LORENA</nombre>
+        <apellido>VALLADARES</apellido>
+        <votos>3</votos>
+      </candidato>
+      <candidato id="214" dignidad="2" pass="cr214">
+        <nombre>DIEGO</nombre>
+        <apellido>SALGADO</apellido>
+        <votos>4</votos>
+      </candidato>
+      <candidato id="215" dignidad="2" pass="cr215">
+        <nombre>CECILIA</nombre>
+        <apellido>CORONEL</apellido>
+        <votos>3</votos>
+      </candidato>
+      <candidato id="216" dignidad="2" pass="cr216">
+        <nombre>MELIZA</nombre>
+        <apellido>CHICA</apellido>
+        <votos>3</votos>
+      </candidato>
+      <candidato id="217" dignidad="3" pass="cr217">
+        <nombre>PAUL</nombre>
+        <apellido>OLSEN</apellido>
+        <votos>5</votos>
+      </candidato>
+      <candidato id="218" dignidad="3" pass="cr218">
+        <nombre>GUILLERMO</nombre>
+        <apellido>PAEZ</apellido>
+        <votos>4</votos>
+      </candidato>
+    </partido>
+  </politica>
+</datos>
