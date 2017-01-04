@@ -148,24 +148,15 @@ Public Class Mesa
                     Console.WriteLine("NO EXISTEN CANDIDATOS PARA ESTA DIGNIDAD")
                 Else
                     Dim opc_tipoVoto As Byte = 0
-                    'Do While opc <= 0 Or opc > candidatos_actuales.Count
+
                     Console.WriteLine("CANDIDATOS A : " & dignidad.Nombre)
                     Dim it As Byte = 1
                     For Each cand As Candidato In candidatos_actuales
                         Console.Write(it & ".- ")
                         cand.MostrarDatos_D()
                         it += 1
-                        'Console.WriteLine()
+
                     Next
-
-                    'Try
-                    '    Console.Write("ESCRIBA LA OPCION A ELEGIR: ")
-                    '    opc = Console.ReadLine()
-
-                    'Catch ex As Exception
-                    '    Console.WriteLine(vbNewLine & "INGRESE SOLO NUMEROS")
-                    'End Try
-
 
                     While opc_tipoVoto <= 0 Or opc_tipoVoto > 4
                         Console.WriteLine("SELECCIONE UN TIPO DE SUFRAGIO:")
@@ -178,6 +169,8 @@ Public Class Mesa
                             Select Case opc_tipoVoto
                                 Case 1
                                     Eleccion_Uno_Uno(dignidad.CantElegir, candidatos_actuales)
+                                Case 2
+                                    Eleccion_Plancha(dignidad.Id, partidos)
                                 Case 3
                                     Exit While
                                 Case Else
@@ -187,14 +180,6 @@ Public Class Mesa
                             opc_tipoVoto = 0
                         End Try
                     End While
-                    'Loop
-
-                   
-
-                    'Dim c As Candidato = candidatos_actuales.Item(opc - 1)
-                    'c.Seleccion = True
-                    'Console.WriteLine("UD HA ELEGIDO")
-                    'c.MostrarDatos_D()
                 End If
             Next
         End If
@@ -223,6 +208,7 @@ Public Class Mesa
                             Case Else
                         End Select
                     Next
+                    cand.Partido = p_p.Nombre
                     p_p.AgregarCandidato(cand)
                 Next
                 part_politicos.Add(p_p)
@@ -253,6 +239,7 @@ Public Class Mesa
             Console.WriteLine("ESCRIBA EL NUMERO DEL CANDIDATO DE SU PREFERENCIA Y PRESIONE ENTER")
             Dim numero As Byte = 1
             For Each candidato As Candidato In candidatos
+                Console.Write(numero & ".- ")
                 candidato.MostrarDatos_D()
                 numero += 1
             Next
@@ -313,19 +300,32 @@ Public Class Mesa
                 Next
             Next
         Next
-
-
     End Sub
 
-    Private Sub ModificarAlquilerDOM(path As String, pathW As String)
-        Dim xmlDoc As New XmlDocument()
-        xmlDoc.Load(path)
-        Dim Peliculas As XmlNodeList = xmlDoc.GetElementsByTagName("movie")
-        For Each peli As XmlNode In Peliculas
-            Console.WriteLine(peli.Name & ":" & peli.Attributes("title").Value)
-            Dim p As XmlElement = peli
-            p.SetAttribute("rented", "2")
-            xmlDoc.Save(pathW)
-        Next
+    Public Sub Eleccion_Plancha(idDignidad As Integer, partidos As ArrayList)
+        Dim candidatos As ArrayList = New ArrayList()
+        Dim opc As Byte = 0
+        Dim numero As Byte = 1
+        While opc <= 0 Or opc > partidos.Count
+            For Each partido As Partido_Politico In partidos
+                Console.WriteLine(numero & ".- " & partido.Nombre)
+                numero += 1
+            Next
+            Try
+                opc = Console.ReadLine
+                Dim p As Partido_Politico = partidos.Item(opc - 1)
+                For Each c As Candidato In p.Candidatos
+                    If c.Cargo = CStr(idDignidad) Then
+                        c.Seleccion = True
+                        candidatos.Add(c)
+                    End If
+                Next
+            Catch ex As Exception
+                Console.WriteLine("ERROR - INSERTE UN NUMERO")
+                opc = 0
+            End Try
+        End While
+        GrabarVotos(candidatos)
     End Sub
+
 End Class

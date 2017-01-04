@@ -31,6 +31,16 @@
         End Set
     End Property
 
+    Private _partido As String 'dignidad a la que aspira ejem: PRESIDENTE, ASAMBLEISTA, ETC
+    Public Property Partido() As String
+        Get
+            Return _partido
+        End Get
+        Set(ByVal value As String)
+            _partido = value
+        End Set
+    End Property
+
     Private _votos As Integer 'La cantidad de votos que va acumulando por parte de los votantes
     Public Property Votos() As Integer
         Get
@@ -77,12 +87,12 @@
             Console.Write(vbTab)
         End If
         Console.Write(Me.Apellido)
-        If Me.Apellido.Length <= 5 Then
-            Console.WriteLine(vbTab & vbTab)
+        If Me.Apellido.Length <= 7 Then
+            Console.Write(vbTab & vbTab)
         Else
-            Console.WriteLine(vbTab)
+            Console.Write(vbTab)
         End If
-        'Console.Write(Me.Cargo)
+        Console.WriteLine("(" & Me.Partido & ")")
         Console.ForegroundColor = ConsoleColor.White
         'Console.Write(Me.Nombre & vbTab & Me.Apellido & vbTab & Me.Cargo)
     End Sub
